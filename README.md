@@ -206,6 +206,7 @@ const { html } = mjml2html(xml, { replacers });
 
 ## TODO
 - Support running in the browser
+- Types (PR most welcome!)
 
 ## References
 
