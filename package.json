@@ -22,6 +22,9 @@
       "**/?(*.)+(spec|test).?([mc])[jt]s?(x)"
     ]
   },
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   }
