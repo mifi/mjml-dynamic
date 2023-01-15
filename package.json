@@ -1,0 +1,29 @@
+{
+  "name": "mjml-dynamic",
+  "version": "1.0.0",
+  "description": "Include dynamic MJML content via JSON",
+  "main": "index.js",
+  "repository": "https://github.com/mifi/mjml-dynamic",
+  "author": "Mikael Finstad <finstaden@gmail.com>",
+  "license": "MIT",
+  "packageManager": "yarn@3.3.1",
+  "devDependencies": {
+    "@faire/mjml-react": "^3.0.2",
+    "jest": "^29.3.1",
+    "mjml": "^4.13.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "peerDependencies": {
+    "mjml": "^4.13.0"
+  },
+  "jest": {
+    "testMatch": [
+      "**/__tests__/**/*.?([mc])[jt]s?(x)",
+      "**/?(*.)+(spec|test).?([mc])[jt]s?(x)"
+    ]
+  },
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  }
+}
