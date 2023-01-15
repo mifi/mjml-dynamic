@@ -202,7 +202,7 @@ const replacers = {
 const { html } = mjml2html(xml, { replacers });
 ```
 
-### [More examples](./index.test.js)
+### [More examples](./index.test.mjs)
 
 ## TODO
 - Support running in the browser
