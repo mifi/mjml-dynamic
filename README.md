@@ -46,7 +46,7 @@ The `mjml2html` API is exactly the same as the upstream `mjml` API, but there is
 
 Any of the above `replacers` properties are optional, and you may alternatively supply a function that receives the existing value as its only argument. This can be used to modify the existing values.
 
-## Example
+## Examples
 
 ```
 yarn add -D mjml mjml-dynamic
