@@ -239,7 +239,9 @@ const { html } = mjml2html(xml, { replacers });
 See initial discussion here: https://github.com/mjmlio/mjml/discussions/2619
 
 
-## Related packages
+## Other cool MJML packages
 
 - [`mjml-react`](https://github.com/Faire/mjml-react)
 - [`mjml-json`](https://github.com/lenfestlab/mjml-json)
+- [`react-mailkit`](https://github.com/pavkout/react-mailkit)
+- [`easy-email`](https://github.com/zalify/easy-email)
