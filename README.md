@@ -1,6 +1,8 @@
-# `mjml-dynamic` - Include dynamic MJML content via JSON
+# Dynamic JSON content for MJML templates
 
-[MJML](https://github.com/mjmlio/mjml) is a great open source tool for building emails, however as developers we often want to include dynamic content in our emails. The problem is that MJML **does not include any templating support** (and they have no intention to.)  This can be worked around by using placeholders in your MJML and then compiling the markup first using a templating engine like [Handlebars](https://github.com/handlebars-lang/handlebars.js), [Pug](https://github.com/pugjs/pug) etc, however what if we could generate the content dynamically using JavaScript! It turns out that MJML already supports rendering [JSON markup](https://documentation.mjml.io/#using-mjml-in-json) instead of MJML. The problem is that there is no way to **include partial JSON content, but this package solves this problem.**
+![mjml](https://user-images.githubusercontent.com/402547/212595358-e7d16377-381e-442a-8b94-ed4d9e135df7.png)
+
+[MJML](https://github.com/mjmlio/mjml) is a great open source tool for building emails, however as developers we often want to include dynamic content in our emails. The problem is that MJML **does not have any templating support** (and they have no intention to.) This can be worked around by using placeholders in your MJML and then compiling the markup first using a templating engine like [Handlebars](https://github.com/handlebars-lang/handlebars.js), [Pug](https://github.com/pugjs/pug) etc, however what if we could generate the content dynamically using JavaScript! It turns out that MJML already supports rendering [JSON markup](https://documentation.mjml.io/#using-mjml-in-json) instead of MJML. The problem is that there is no way to **include partial JSON content, but `mjml-dynamic` solves this problem.**
 
 ## Benefits:
 
