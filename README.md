@@ -165,36 +165,60 @@ This will output the equivalent of the following MJML document:
 </mjml>
 ```
 
-### Example: usage with [`mjml-react`](https://github.com/Faire/mjml-react)
+### Practical example: usage with [`mjml-react`](https://github.com/Faire/mjml-react)
 
 Example to replace parts of your `.mjml` document with React code:
 
+You have `template.mjml` that you can preview using official MJML tooling:
+```xml
+<mjml>
+  <mj-body>
+    <mj-include path="header.mjml" />
+
+    <mj-section>
+      <mj-column>
+        <mj-text>Here is a list of people</mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section>
+      <mj-column mj-replace-id="peopleList" />
+    </mj-section>
+
+    <mj-include path="footer.mjml" />
+  </mj-body>
+</mjml>
+```
+
+Then you can render the contents of `mj-replace-id="peopleList"` using `mjml-react`:
+
 ```jsx
+import readFile from 'fs/promises';
 import { parseXml } from 'mjml-dynamic';
+
+const tableData = [
+  { id: 1, name: 'Jane Doe' },
+  { id: 2, name: 'John Doe' },
+];
 
 const mjml = renderToStaticMarkup((
   <MjmlTable>
-    <tr>
-      <td style={{ padding: '0 10px' }}>
-        this is a table column
-      </td>
-    </tr>
+    {tableData.map(({ id, name }) => (
+      <tr key={id}>
+        <td style={{ padding: '0 10px' }}>
+          {name}
+        </td>
+      </tr>
+    )}
   </MjmlTable>
 ));
-    const { json: reactJson } = parseXml(mjml);
 
-    const xml = `\
-<mjml>
-  <mj-body>
-    <mj-section>
-      <mj-column mj-replace-id="replacedReact" />
-    </mj-section>
-  </mj-body>
-</mjml>
-`;
+const { json: reactJson } = parseXml(mjml);
+
+const xml = await readFile('template.mjml', 'utf-8');
 
 const replacers = {
-  replacedReact: {
+  peopleList: {
     children: [reactJson],
   },
 };
