@@ -230,6 +230,12 @@ const { html } = mjml2html(xml, { replacers });
 
 ### [More examples](./index.test.mjs)
 
+## Other options
+
+### `validateReplacers` (default `true`)
+
+Whether to check if all `mj-replace-id` in the MJML tree are specified in options, and check if all `replacers` exist in the MJML tree. This is useful in order to reduce the chance of coding mistakes.
+
 ## TODO
 - Support running in the browser
 - Types (PR most welcome!)

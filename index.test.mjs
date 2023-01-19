@@ -27,7 +27,7 @@ describe('mjml', () => {
   test('parseXml with missing replacer', () => {
     // console.log(JSON.stringify(parseXml(xml1, { filePath: __dirname }), null, 2))
 
-    const parsed = parseXml(xml1, { filePath: __dirname });
+    const parsed = parseXml(xml1, { filePath: __dirname, validateReplacers: false });
     expect(parsed.mjmlOptions).toMatchObject({
       filePath: expect.stringMatching(/^.+$/),
     });
@@ -111,7 +111,7 @@ describe('mjml', () => {
       },
     };
 
-    const parsed = parseXml(xml1, { filePath: __dirname, replacers });
+    const parsed = parseXml(xml1, { filePath: __dirname, replacers, validateReplacers: false });
     expect(parsed.json).toEqual({
       tagName: 'mjml',
       attributes: {},
@@ -182,14 +182,14 @@ describe('mjml', () => {
     });
   });
 
-  test('parseXml with included replacer', () => {
+  test('parseXml with replacer in included file', () => {
     const replacers = {
       included: {
         content: 'some new text',
       },
     };
 
-    const parsed = parseXml(xml1, { filePath: __dirname, replacers });
+    const parsed = parseXml(xml1, { filePath: __dirname, replacers, validateReplacers: false });
     expect(parsed.json).toEqual({
       tagName: 'mjml',
       attributes: {},
@@ -270,7 +270,7 @@ describe('mjml', () => {
       },
     };
 
-    const parsed = parseXml(xml1, { filePath: __dirname, replacers });
+    const parsed = parseXml(xml1, { filePath: __dirname, replacers, validateReplacers: false });
     expect(parsed.json).toEqual({
       tagName: 'mjml',
       attributes: {},
@@ -423,7 +423,7 @@ describe('mjml', () => {
       replaced: { content: 'This is injected via JSON' },
     };
 
-    const { html } = mjml2html(xml1, { filePath: __dirname, replacers });
+    const { html } = mjml2html(xml1, { filePath: __dirname, replacers, validateReplacers: false });
     // console.log(html)
     expect(html).toMatchSnapshot();
   });
@@ -465,11 +465,11 @@ describe('with mjml-react', () => {
 </mjml>
 `;
 
-const replacers = {
-  replacedReact: {
-    children: [reactJson],
-  },
-};
+  const replacers = {
+    replacedReact: {
+      children: [reactJson],
+    },
+  };
 
     const parsed = parseXml(xml, { filePath: __dirname, replacers });
     expect(parsed.json).toEqual({
@@ -501,5 +501,38 @@ const replacers = {
         },
       ],
     });
-  })
+  });
+});
+
+describe('validation', () => {
+  test('validateReplacers, missing replacer', () => {
+    const xml = `\
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column mj-replace-id="replaced" />
+    </mj-section>
+  </mj-body>
+</mjml>
+`;
+
+    const replacers = {};
+    expect(() => parseXml(xml, { filePath: __dirname, replacers })).toThrow('Replacer "replaced" not found in options');
+  });
+  test('validateReplacers, extraneous replacer', () => {
+    const xml = `\
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column />
+    </mj-section>
+  </mj-body>
+</mjml>
+`;
+
+    const replacers = {
+      replaced: { content: 'wat' },
+    };
+    expect(() => parseXml(xml, { filePath: __dirname, replacers })).toThrow('Replacer "replaced" not found in document');
+  });
 });

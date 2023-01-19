@@ -12,7 +12,7 @@ const Parser = require('mjml-parser-xml');
 const jsonIncludeAttributeName = 'mj-replace-id';
 
 function parseXml(xml, options = {}) {
-  const { replacers, ...mjmlOptions } = options;
+  const { replacers, validateReplacers = true, ...mjmlOptions } = options;
   const { keepComments, filePath, ignoreIncludes, preprocessors } = mjmlOptions;
 
   const replacersMap = new Map(replacers != null ? Object.entries(replacers) : []);
@@ -27,6 +27,8 @@ function parseXml(xml, options = {}) {
 
   // console.log(JSON.stringify(jsonRaw, null, 2))
 
+  const replacersFound = new Set();
+
   const mapTag = ({ tagName, children, attributes, content }) => {
     const ret = { tagName };
     if (attributes != null) ret.attributes = attributes;
@@ -39,11 +41,14 @@ function parseXml(xml, options = {}) {
 
       if (replacersMap.has(replacerId)) {
         const match = replacersMap.get(replacerId);
+        replacersFound.add(replacerId);
         const replacementOrFn = (existing, replacement) => (typeof replacement === 'function' ? replacement(existing) : replacement);
         if (match.tagName != null) ret.tagName = replacementOrFn(tagName, match.tagName);
         if (match.attributes != null) ret.attributes = replacementOrFn(attributes, match.attributes);
         if (match.children != null) ret.children = replacementOrFn(Array.isArray(children) ? children.map(mapTag) : children, match.children);
         if (match.content != null) ret.content = replacementOrFn(content, match.content);
+      } else if (validateReplacers) {
+        throw new Error(`Replacer "${replacerId}" not found in options`);
       }
     }
 
@@ -52,6 +57,11 @@ function parseXml(xml, options = {}) {
 
   const json = mapTag(jsonRaw);
   // console.log(JSON.stringify(json, null, 2))
+
+  if (replacers != null && validateReplacers) {
+    const nonUsedReplacers = Object.entries(replacers).filter(([, replacer]) => replacer != null).filter(([replacerId]) => !replacersFound.has(replacerId));
+    if (nonUsedReplacers.length > 0) throw new Error(`Replacer "${nonUsedReplacers[0][0]}" not found in document`);
+  }
 
   return { json, mjmlOptions };
 }
