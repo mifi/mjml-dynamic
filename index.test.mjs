@@ -536,3 +536,41 @@ describe('validation', () => {
     expect(() => parseXml(xml, { filePath: __dirname, replacers })).toThrow('Replacer "replaced" not found in document');
   });
 });
+
+describe('escaping', () => {
+  const xml = `\
+  <mjml>
+    <mj-body>
+      <mj-section>
+        <mj-column>
+          <mj-button title="me &amp; you" mj-replace-id="replaced" />
+        </mj-column>
+      </mj-section>
+    </mj-body>
+  </mjml>
+  `;
+  
+  test('escape attributes and content', () => {
+    const replacers = {
+      replaced: {
+        attributes: { href: '&<>"\'å;' },
+        content: '&<>"\'å;',
+      },
+    };
+
+    const { html } = mjml2html(xml, { replacers });
+    expect(html).toMatchSnapshot();
+  });
+
+  test('not escape functional content', () => {
+    const replacers = {
+      replaced: {
+        attributes: (attributes) => ({ ...attributes, href: '&<>"\'å;' }),
+        content: () => '<div>not escaped</div>',
+      },
+    };
+
+    const { html } = mjml2html(xml, { replacers });
+    expect(html).toMatchSnapshot();
+  });
+});

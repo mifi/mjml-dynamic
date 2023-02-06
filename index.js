@@ -3,6 +3,7 @@ const mjml2html = require('mjml');
 const { components } = require('mjml-core');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const Parser = require('mjml-parser-xml');
+const entities = require('entities');
 
 // https://github.com/mjmlio/mjml/blob/master/packages/mjml-parser-xml/test/test.js
 // https://github.com/mjmlio/mjml/discussions/2619
@@ -42,11 +43,21 @@ function parseXml(xml, options = {}) {
       if (replacersMap.has(replacerId)) {
         const match = replacersMap.get(replacerId);
         replacersFound.add(replacerId);
-        const replacementOrFn = (existing, replacement) => (typeof replacement === 'function' ? replacement(existing) : replacement);
+
+        // auto-encode only non-functional
+        const replacementOrFn = (existing, replacement, escaper = (v) => v) => (typeof replacement === 'function' ? replacement(existing) : escaper(replacement));
+
+        // auto-encode newly added attributes, pass thru existing
+        const deepReplacementOrFn = (existingAttributes, replacement, escaper = (v) => v) => {
+          const newAttributes = (typeof replacement === 'function' ? replacement(existingAttributes) : replacement);
+          if (!newAttributes) return {};
+          return Object.fromEntries(Object.entries(newAttributes).map(([key, value]) => [key, existingAttributes[key] != null ? value : escaper(value)]));
+        };
+
         if (match.tagName != null) ret.tagName = replacementOrFn(tagName, match.tagName);
-        if (match.attributes != null) ret.attributes = replacementOrFn(attributes, match.attributes);
+        if (match.attributes != null) ret.attributes = deepReplacementOrFn(attributes, match.attributes, (v) => entities.escapeAttribute(v));
         if (match.children != null) ret.children = replacementOrFn(Array.isArray(children) ? children.map(mapTag) : children, match.children);
-        if (match.content != null) ret.content = replacementOrFn(content, match.content);
+        if (match.content != null) ret.content = replacementOrFn(content, match.content, (v) => entities.escapeUTF8(v));
       } else if (validateReplacers) {
         throw new Error(`Replacer "${replacerId}" not found in options`);
       }

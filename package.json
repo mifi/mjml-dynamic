@@ -27,5 +27,8 @@
   ],
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "dependencies": {
+    "entities": "^4.4.0"
   }
 }

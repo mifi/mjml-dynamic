@@ -39,14 +39,16 @@ You include a special tag `mj-replace-id="myId"` into any of your `mj-` tags in 
 
 ### New `mjml2html` option: `replacers`
 
-The `mjml2html` API is exactly the same as the upstream `mjml` API, but there is an added option called `replacers` which is an object where each key corresponds to a `mj-replace-id` and the value is an object with one or more of the following properties:
+The `mjml2html()` API of `mjml-dynamic` is exactly the same as the upstream `mjml` API, but there is an added option called `replacers` which is an object where each key corresponds to a `mj-replace-id` and the value is an object with one or more of the following properties:
 
-- `content` (`string`) - Allows you to change the text content of the element.
-- `attributes` (`object<string,string>`) - Allows you to change the XML attributes of the element.
-- `children` (`array<object>`) - Allows you to change the element's children.
-- `tagName` (`string`) - Allows you to change the tag to a completely different tag.
+| Property | Type | Description |
+| --- | --- | --- |
+| `content` | `string` | Change the text or HTML content of the element. |
+| `attributes` | `object<string,string>` | Change the HTML attributes of the element. |
+| `children` | `array<object>` | Change the element's MJML children elements (for example with `mjml-react`.) |
+| `tagName` | `string` | Change the tag to a completely different tag. |
 
-Any of the above `replacers` properties are optional, and you may alternatively supply a function that receives the existing value as its only argument. This can be used to modify the existing values.
+Any of the above `replacers` properties are optional. You may alternatively supply a **function** that receives the existing value as its only argument and returns the new value. This can be used to modify the existing values. **`content` and `attributes` replacements are automatically escaped, however if you use the functional `content` replacer, the response is not escaped.**
 
 ## Examples
 
@@ -59,9 +61,10 @@ import mjml2html from 'mjml-dynamic';
 
 const replacers = {
   myId: {
-    tagName: 'mj-text' 
-    content: 'new text content',
-    attributes: { color: 'red' },
+    tagName: 'mj-button',
+    // these values are all automatically escaped:
+    content: 'new text content', 
+    attributes: { color: 'red', href: '&' },
   },
   // ... more `mj-replace-id`s
 };
@@ -77,9 +80,9 @@ This will output the equivalent of the following MJML document:
     <mj-section>
       <mj-column>
 
-        <mj-text color="red">
+        <mj-button color="red" href="&amp;">
           new text content
-        </mj-text>
+        </mj-button>
 
       </mj-column>
     </mj-section>
@@ -92,11 +95,13 @@ This will output the equivalent of the following MJML document:
 ```js
 const replacers = {
   myId: {
-    // adds an additional color attribute:
+    // Add an additional color attribute, while preserving the existing attributes:
     attributes: (attributes) => ({ ...attributes, color: 'red' },
-    // rewrites the text content:
+
+    // Rewrite the HTML content:
     content: (content) => content.replace('{{something}}', 'something else'),
-    // (you may use a template engine line handlebars for more sophisticated replacements)
+    // NOTE! mjml-dynamic does not automatically escape the replacement HTML here, so you need to do it yourself.
+    // (You may use a template engine like handlebars for more sophisticated replacements)
   },
 };
 ```
@@ -171,7 +176,8 @@ This will output the equivalent of the following MJML document:
 
 Example to replace parts of your `.mjml` document with React code:
 
-You have `template.mjml` that you can preview using official MJML tooling:
+Assuming you have a `template.mjml` with an overall email layout that you can preview using official MJML tooling:
+
 ```xml
 <mjml>
   <mj-body>
@@ -192,7 +198,7 @@ You have `template.mjml` that you can preview using official MJML tooling:
 </mjml>
 ```
 
-Then you can render the contents of `mj-replace-id="peopleList"` using `mjml-react`:
+Then you can render the contents of the element `<mj-column mj-replace-id="peopleList">` using `mjml-react`:
 
 ```jsx
 import readFile from 'fs/promises';
