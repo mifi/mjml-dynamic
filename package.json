@@ -1,6 +1,6 @@
 {
   "name": "mjml-dynamic",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Include dynamic MJML content via JSON",
   "main": "index.js",
   "repository": "https://github.com/mifi/mjml-dynamic",
