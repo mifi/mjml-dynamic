@@ -31,9 +31,11 @@ function parseXml(xml, options = {}) {
   const replacersFound = new Set();
 
   const mapTag = ({ tagName, children, attributes, content }) => {
+    const mappedChildren = Array.isArray(children) ? children.map(mapTag).filter((child) => child != null) : children;
+
     const ret = { tagName };
     if (attributes != null) ret.attributes = attributes;
-    if (children != null) ret.children = children?.map(mapTag);
+    if (children != null) ret.children = mappedChildren;
     if (content != null) ret.content = content;
 
     if (attributes != null && attributes[jsonIncludeAttributeName] != null) {
@@ -41,23 +43,55 @@ function parseXml(xml, options = {}) {
       delete ret.attributes[jsonIncludeAttributeName];
 
       if (replacersMap.has(replacerId)) {
-        const match = replacersMap.get(replacerId);
+        const replacer = replacersMap.get(replacerId);
+
         replacersFound.add(replacerId);
 
+        if (replacer === null) return undefined; // null means delete
+
+        const defaultEscaper = (v) => v;
+
         // auto-encode only non-functional
-        const replacementOrFn = (existing, replacement, escaper = (v) => v) => (typeof replacement === 'function' ? replacement(existing) : escaper(replacement));
+        const replacementOrFn = (existing, replacement, escaper = defaultEscaper) => (
+          typeof replacement === 'function' ? replacement(existing) : escaper(replacement)
+        );
 
         // auto-encode newly added attributes, pass thru existing
-        const deepReplacementOrFn = (existingAttributes, replacement, escaper = (v) => v) => {
+        const deepReplacementOrFn = (existingAttributes, replacement, escaper = defaultEscaper) => {
           const newAttributes = (typeof replacement === 'function' ? replacement(existingAttributes) : replacement);
           if (!newAttributes) return {};
           return Object.fromEntries(Object.entries(newAttributes).map(([key, value]) => [key, existingAttributes[key] != null ? value : escaper(value)]));
         };
 
-        if (match.tagName != null) ret.tagName = replacementOrFn(tagName, match.tagName);
-        if (match.attributes != null) ret.attributes = deepReplacementOrFn(attributes, match.attributes, (v) => entities.escapeAttribute(v));
-        if (match.children != null) ret.children = replacementOrFn(Array.isArray(children) ? children.map(mapTag) : children, match.children);
-        if (match.content != null) ret.content = replacementOrFn(content, match.content, (v) => entities.escapeUTF8(v));
+        if (replacer.tagName != null) {
+          ret.tagName = replacementOrFn(
+            tagName,
+            replacer.tagName,
+          );
+        }
+
+        if (replacer.children != null) {
+          ret.children = replacementOrFn(
+            mappedChildren,
+            replacer.children,
+          );
+        }
+
+        if (replacer.content != null) {
+          ret.content = replacementOrFn(
+            content,
+            replacer.content,
+            (v) => entities.escapeUTF8(v),
+          );
+        }
+
+        if (replacer.attributes != null) {
+          ret.attributes = deepReplacementOrFn(
+            attributes,
+            replacer.attributes,
+            (v) => entities.escapeAttribute(v),
+          );
+        }
       } else if (validateReplacers) {
         throw new Error(`Replacer "${replacerId}" not found in options`);
       }

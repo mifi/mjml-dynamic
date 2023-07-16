@@ -39,7 +39,7 @@ You include a special tag `mj-replace-id="myId"` into any of your `mj-` tags in 
 
 ### New `mjml2html` option: `replacers`
 
-The `mjml2html()` API of `mjml-dynamic` is exactly the same as the upstream `mjml` API, but there is an added option called `replacers` which is an object where each key corresponds to a `mj-replace-id` and the value is an object with one or more of the following properties:
+The `mjml2html()` API of `mjml-dynamic` is exactly the same as the upstream `mjml` API, but there is an added option called `replacers` which is an object where each key corresponds to a `mj-replace-id` and the value is either `null` or an object with one or more of the following properties:
 
 | Property | Type | Description |
 | --- | --- | --- |
@@ -48,7 +48,9 @@ The `mjml2html()` API of `mjml-dynamic` is exactly the same as the upstream `mjm
 | `children` | `array<object>` | Change the element's MJML children elements (for example with `mjml-react`.) |
 | `tagName` | `string` | Change the tag to a completely different tag. |
 
-Any of the above `replacers` properties are optional. You may alternatively supply a **function** that receives the existing value as its only argument and returns the new value. This can be used to modify the existing values. **`content` and `attributes` replacements are automatically escaped, however if you use the functional `content` replacer, the response is not escaped.**
+Any of the above `replacers` properties are optional. You may alternatively supply a **function** that receives the existing value as its only argument and returns the new value. This can be used to modify the existing values. **`content` and `attributes` replacements are automatically escaped, however if you specify the functional `content` replacer, the response is not escaped.**
+
+If you specify `null` as the replacer's value instead of the above object, the matching node *will be removed*.
 
 ## Examples
 
@@ -66,6 +68,7 @@ const replacers = {
     content: 'new text content', 
     attributes: { color: 'red', href: '&' },
   },
+  removedId: null, // use null to completey remove the node
   // ... more `mj-replace-id`s
 };
 

@@ -494,3 +494,38 @@ exports[`mjml mjml2html 1`] = `
 </html>
   "
 `;
+
+exports[`mjml remove node 1`] = `
+{
+  "json": {
+    "attributes": {},
+    "children": [
+      {
+        "attributes": {},
+        "children": [
+          {
+            "attributes": {},
+            "children": [
+              {
+                "attributes": {},
+                "children": [
+                  {
+                    "attributes": {},
+                    "content": "text2",
+                    "tagName": "mj-text",
+                  },
+                ],
+                "tagName": "mj-column",
+              },
+            ],
+            "tagName": "mj-section",
+          },
+        ],
+        "tagName": "mj-body",
+      },
+    ],
+    "tagName": "mjml",
+  },
+  "mjmlOptions": {},
+}
+`;

@@ -427,6 +427,28 @@ describe('mjml', () => {
     // console.log(html)
     expect(html).toMatchSnapshot();
   });
+
+  test('remove node', () => {
+    const xml = `\
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text mj-replace-id="removed">text1</mj-text>
+        <mj-text>text2</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
+`;
+
+    const replacers = {
+      removed: null,
+    };
+
+    const parsed = parseXml(xml, { replacers })
+    expect(parsed).toMatchSnapshot();
+  });
 });
 
 describe('with mjml-react', () => {
