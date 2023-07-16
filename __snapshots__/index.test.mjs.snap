@@ -529,3 +529,38 @@ exports[`mjml remove node 1`] = `
   "mjmlOptions": {},
 }
 `;
+
+exports[`mjml unchanged 1`] = `
+{
+  "json": {
+    "attributes": {},
+    "children": [
+      {
+        "attributes": {},
+        "children": [
+          {
+            "attributes": {},
+            "children": [
+              {
+                "attributes": {},
+                "children": [
+                  {
+                    "attributes": {},
+                    "content": "text1",
+                    "tagName": "mj-text",
+                  },
+                ],
+                "tagName": "mj-column",
+              },
+            ],
+            "tagName": "mj-section",
+          },
+        ],
+        "tagName": "mj-body",
+      },
+    ],
+    "tagName": "mjml",
+  },
+  "mjmlOptions": {},
+}
+`;

@@ -449,6 +449,27 @@ describe('mjml', () => {
     const parsed = parseXml(xml, { replacers })
     expect(parsed).toMatchSnapshot();
   });
+
+  test('unchanged', () => {
+    const xml = `\
+<mjml>
+<mj-body>
+  <mj-section>
+    <mj-column>
+      <mj-text mj-replace-id="unchanged">text1</mj-text>
+    </mj-column>
+  </mj-section>
+</mj-body>
+</mjml>
+`;
+  
+    const replacers = {
+      unchanged: {},
+    };
+  
+    const parsed = parseXml(xml, { replacers })
+    expect(parsed).toMatchSnapshot();
+  });
 });
 
 describe('with mjml-react', () => {
