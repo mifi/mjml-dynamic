@@ -260,3 +260,9 @@ See initial discussion here: https://github.com/mjmlio/mjml/discussions/2619
 - [`mjml-json`](https://github.com/lenfestlab/mjml-json)
 - [`react-mailkit`](https://github.com/pavkout/react-mailkit)
 - [`easy-email`](https://github.com/zalify/easy-email)
+
+## Release
+
+```
+np
+```
