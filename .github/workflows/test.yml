@@ -9,6 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # todo remove once fixed https://github.com/actions/setup-node/issues/899
+      - name: Enable Corepack before setting up Node
+        run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: 18
