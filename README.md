@@ -247,7 +247,6 @@ Whether to check if all `mj-replace-id` in the MJML tree are specified in option
 
 ## TODO
 - Support running in the browser
-- Types (PR most welcome!)
 
 ## References
 

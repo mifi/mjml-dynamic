@@ -1,13 +1,16 @@
-import { dirname } from 'path';
+import { describe, test, expect } from 'vitest';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { createElement, Fragment } from 'react';
+import { createElement } from 'react';
 import { MjmlTable } from '@faire/mjml-react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import mjml2html, { parseXml } from './index.js';
+import mjml2html, { Replacers, parseXml } from './index.js';
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const filePath = join(__dirname, '..');
 
 const xml1 = `\
 <mjml>
@@ -25,9 +28,9 @@ const xml1 = `\
 
 describe('mjml', () => {
   test('parseXml with missing replacer', () => {
-    // console.log(JSON.stringify(parseXml(xml1, { filePath: __dirname }), null, 2))
+    // console.log(JSON.stringify(parseXml(xml1, { filePath }), null, 2))
 
-    const parsed = parseXml(xml1, { filePath: __dirname, validateReplacers: false });
+    const parsed = parseXml(xml1, { filePath, validateReplacers: false });
     expect(parsed.mjmlOptions).toMatchObject({
       filePath: expect.stringMatching(/^.+$/),
     });
@@ -111,7 +114,7 @@ describe('mjml', () => {
       },
     };
 
-    const parsed = parseXml(xml1, { filePath: __dirname, replacers, validateReplacers: false });
+    const parsed = parseXml(xml1, { filePath, replacers, validateReplacers: false });
     expect(parsed.json).toEqual({
       tagName: 'mjml',
       attributes: {},
@@ -189,7 +192,7 @@ describe('mjml', () => {
       },
     };
 
-    const parsed = parseXml(xml1, { filePath: __dirname, replacers, validateReplacers: false });
+    const parsed = parseXml(xml1, { filePath, replacers, validateReplacers: false });
     expect(parsed.json).toEqual({
       tagName: 'mjml',
       attributes: {},
@@ -262,7 +265,7 @@ describe('mjml', () => {
   });
 
   test('parseXml with functional replacer', () => {
-    const replacers = {
+    const replacers: Replacers = {
       replaced: {
         tagName: (existing) => `${existing}3`,
         attributes: (existing) => ({ ...existing, align: 'right' }),
@@ -270,7 +273,7 @@ describe('mjml', () => {
       },
     };
 
-    const parsed = parseXml(xml1, { filePath: __dirname, replacers, validateReplacers: false });
+    const parsed = parseXml(xml1, { filePath, replacers, validateReplacers: false });
     expect(parsed.json).toEqual({
       tagName: 'mjml',
       attributes: {},
@@ -357,16 +360,16 @@ describe('mjml', () => {
 </mjml>
 `;
 
-    const replacers = {
+    const replacers: Replacers = {
       replaced1: {
-        children: [{ tagName: 'mj-text', content: 'replaced1 text' }],
+        children: [{ tagName: 'mj-text', content: 'replaced1 text', attributes: {} }],
       },
       replaced2: {
-        children: (existing) => [...existing, { tagName: 'mj-text', content: 'replaced2 text' }],
+        children: (existing) => [...existing, { tagName: 'mj-text', content: 'replaced2 text', attributes: {} }],
       },
     };
 
-    const parsed = parseXml(xml, { filePath: __dirname, replacers });
+    const parsed = parseXml(xml, { filePath, replacers });
     expect(parsed.json).toEqual({
       tagName: 'mjml',
       attributes: {},
@@ -386,6 +389,7 @@ describe('mjml', () => {
                     {
                       tagName: 'mj-text',
                       content: 'replaced1 text',
+                      attributes: {},
                     },
                   ],
                 },
@@ -407,6 +411,7 @@ describe('mjml', () => {
                     {
                       tagName: 'mj-text',
                       content: 'replaced2 text',
+                      attributes: {},
                     },
                   ],
                 },
@@ -419,11 +424,11 @@ describe('mjml', () => {
   });
 
   test('mjml2html', () => {
-    const replacers = {
+    const replacers: Replacers = {
       replaced: { content: 'This is injected via JSON' },
     };
 
-    const { html } = mjml2html(xml1, { filePath: __dirname, replacers, validateReplacers: false });
+    const { html } = mjml2html(xml1, { filePath, replacers, validateReplacers: false });
     // console.log(html)
     expect(html).toMatchSnapshot();
   });
@@ -508,13 +513,14 @@ describe('with mjml-react', () => {
 </mjml>
 `;
 
-  const replacers = {
+
+  const replacers: Replacers = {
     replacedReact: {
-      children: [reactJson],
+      children: [reactJson!],
     },
   };
 
-    const parsed = parseXml(xml, { filePath: __dirname, replacers });
+    const parsed = parseXml(xml, { filePath, replacers });
     expect(parsed.json).toEqual({
       tagName: 'mjml',
       attributes: {},
@@ -560,7 +566,7 @@ describe('validation', () => {
 `;
 
     const replacers = {};
-    expect(() => parseXml(xml, { filePath: __dirname, replacers })).toThrow('Replacer "replaced" not found in options');
+    expect(() => parseXml(xml, { filePath, replacers })).toThrow('Replacer "replaced" not found in options');
   });
   test('validateReplacers, extraneous replacer', () => {
     const xml = `\
@@ -576,7 +582,7 @@ describe('validation', () => {
     const replacers = {
       replaced: { content: 'wat' },
     };
-    expect(() => parseXml(xml, { filePath: __dirname, replacers })).toThrow('Replacer "replaced" not found in document');
+    expect(() => parseXml(xml, { filePath, replacers })).toThrow('Replacer "replaced" not found in document');
   });
 });
 
@@ -594,7 +600,7 @@ describe('escaping', () => {
   `;
   
   test('escape attributes and content', () => {
-    const replacers = {
+    const replacers: Replacers = {
       replaced: {
         attributes: { href: '&<>"\'å;' },
         content: '&<>"\'å;',
@@ -606,7 +612,7 @@ describe('escaping', () => {
   });
 
   test('not escape functional content', () => {
-    const replacers = {
+    const replacers: Replacers = {
       replaced: {
         attributes: (attributes) => ({ ...attributes, href: '&<>"\'å;' }),
         content: () => '<div>not escaped</div>',
