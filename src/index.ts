@@ -27,8 +27,8 @@ export type Replacer = {
 export type Replacers = Record<string, Replacer>
 
 export interface Options extends MJMLParsingOptions {
-  validateReplacers?: boolean,
-  replacers?: Replacers,
+  validateReplacers?: boolean | undefined,
+  replacers?: Replacers | undefined,
 }
 
 export function parseXml(xml: unknown, options: Options = {}) {
