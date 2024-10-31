@@ -18,10 +18,10 @@ export const replacerAttributeName = 'mj-replace-id' as const;
  * null means delete node
  */
 export type Replacer = {
-  tagName?: string | ((a: string) => string),
-  content?: string | ((a: string) => string),
-  attributes?: Record<string, unknown> | ((a: Record<string, unknown>) => Record<string, unknown>),
-  children?: MJMLJsonObject[] | ((a: MJMLJsonObject[]) => MJMLJsonObject[]),
+  tagName?: string | ((a: string) => string) | undefined,
+  content?: string | ((a: string) => string) | undefined,
+  attributes?: Record<string, unknown> | ((a: Record<string, unknown>) => Record<string, unknown>) | undefined,
+  children?: MJMLJsonObject[] | ((a: MJMLJsonObject[]) => MJMLJsonObject[]) | undefined,
 } | null;
 
 export type Replacers = Record<string, Replacer>
