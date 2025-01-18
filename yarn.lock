@@ -1002,13 +1002,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"entities@npm:4, entities@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "entities@npm:4.5.0"
-  checksum: 5b039739f7621f5d1ad996715e53d964035f75ad3b9a4d38c6b3804bb226e282ffeae2443624d8fdd9c47d8e926ae9ac009c54671243f0c3294c26af7cc85250
-  languageName: node
-  linkType: hard
-
 "entities@npm:^2.0.0":
   version: 2.2.0
   resolution: "entities@npm:2.2.0"
@@ -1020,6 +1013,13 @@ __metadata:
   version: 4.4.0
   resolution: "entities@npm:4.4.0"
   checksum: b7971419897622d3996bbbff99249e166caaaf3ea95d3841d6dc5d3bf315f133b649fbe932623e3cc527d871112e7563a8284e24f23e472126aa90c4e9c3215b
+  languageName: node
+  linkType: hard
+
+"entities@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "entities@npm:4.5.0"
+  checksum: 5b039739f7621f5d1ad996715e53d964035f75ad3b9a4d38c6b3804bb226e282ffeae2443624d8fdd9c47d8e926ae9ac009c54671243f0c3294c26af7cc85250
   languageName: node
   linkType: hard
 
@@ -1880,7 +1880,7 @@ __metadata:
     "@types/mjml": "npm:^4.7.4"
     "@types/react": "npm:^18.2.39"
     "@types/react-dom": "npm:^18.2.17"
-    entities: "npm:4"
+    entities: "npm:^4.4.0"
     mjml: "npm:^4.13.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
