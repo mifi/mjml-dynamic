@@ -2,11 +2,9 @@
 
 exports[`escaping > escape attributes and content 1`] = `
 "<!doctype html>
-<html xmlns=\\"http://www.w3.org/1999/xhtml\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\">
+<html lang=\\"und\\" dir=\\"auto\\" xmlns=\\"http://www.w3.org/1999/xhtml\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\">
   <head>
-    <title>
-      
-    </title>
+    <title></title>
     <!--[if !mso]><!-->
     <meta http-equiv=\\"X-UA-Compatible\\" content=\\"IE=edge\\">
     <!--<![endif]-->
@@ -53,21 +51,17 @@ exports[`escaping > escape attributes and content 1`] = `
       .moz-text-html .mj-column-per-100 { width:100% !important; max-width: 100%; }
     </style>
     
+    
   
-    <style type=\\"text/css\\">
     
     
-    </style>
-    <style type=\\"text/css\\">
-    
-    </style>
     
   </head>
   <body style=\\"word-spacing:normal;\\">
     
     
       <div
-         style=\\"\\"
+         style=\\"\\" lang=\\"und\\" dir=\\"auto\\"
       >
         
       
@@ -97,7 +91,7 @@ exports[`escaping > escape attributes and content 1`] = `
           
               <tr>
                 <td
-                   align=\\"center\\" vertical-align=\\"middle\\" style=\\"font-size:0px;padding:10px 25px;word-break:break-word;\\"
+                   align=\\"center\\" style=\\"font-size:0px;padding:10px 25px;word-break:break-word;\\"
                 >
                   
       <table
@@ -147,11 +141,9 @@ exports[`escaping > escape attributes and content 1`] = `
 
 exports[`escaping > not escape functional content 1`] = `
 "<!doctype html>
-<html xmlns=\\"http://www.w3.org/1999/xhtml\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\">
+<html lang=\\"und\\" dir=\\"auto\\" xmlns=\\"http://www.w3.org/1999/xhtml\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\">
   <head>
-    <title>
-      
-    </title>
+    <title></title>
     <!--[if !mso]><!-->
     <meta http-equiv=\\"X-UA-Compatible\\" content=\\"IE=edge\\">
     <!--<![endif]-->
@@ -198,21 +190,17 @@ exports[`escaping > not escape functional content 1`] = `
       .moz-text-html .mj-column-per-100 { width:100% !important; max-width: 100%; }
     </style>
     
+    
   
-    <style type=\\"text/css\\">
     
     
-    </style>
-    <style type=\\"text/css\\">
-    
-    </style>
     
   </head>
   <body style=\\"word-spacing:normal;\\">
     
     
       <div
-         style=\\"\\"
+         style=\\"\\" lang=\\"und\\" dir=\\"auto\\"
       >
         
       
@@ -242,7 +230,7 @@ exports[`escaping > not escape functional content 1`] = `
           
               <tr>
                 <td
-                   align=\\"center\\" vertical-align=\\"middle\\" style=\\"font-size:0px;padding:10px 25px;word-break:break-word;\\"
+                   align=\\"center\\" style=\\"font-size:0px;padding:10px 25px;word-break:break-word;\\"
                 >
                   
       <table
@@ -292,11 +280,9 @@ exports[`escaping > not escape functional content 1`] = `
 
 exports[`mjml > mjml2html 1`] = `
 "<!doctype html>
-<html xmlns=\\"http://www.w3.org/1999/xhtml\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\">
+<html lang=\\"und\\" dir=\\"auto\\" xmlns=\\"http://www.w3.org/1999/xhtml\\" xmlns:v=\\"urn:schemas-microsoft-com:vml\\" xmlns:o=\\"urn:schemas-microsoft-com:office:office\\">
   <head>
-    <title>
-      
-    </title>
+    <title></title>
     <!--[if !mso]><!-->
     <meta http-equiv=\\"X-UA-Compatible\\" content=\\"IE=edge\\">
     <!--<![endif]-->
@@ -343,21 +329,17 @@ exports[`mjml > mjml2html 1`] = `
       .moz-text-html .mj-column-per-100 { width:100% !important; max-width: 100%; }
     </style>
     
+    
   
-    <style type=\\"text/css\\">
     
     
-    </style>
-    <style type=\\"text/css\\">
-    
-    </style>
     
   </head>
   <body style=\\"word-spacing:normal;\\">
     
     
       <div
-         style=\\"\\"
+         style=\\"\\" lang=\\"und\\" dir=\\"auto\\"
       >
         
       
